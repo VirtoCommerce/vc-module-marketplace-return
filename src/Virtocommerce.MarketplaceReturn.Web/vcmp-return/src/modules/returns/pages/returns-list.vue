@@ -67,7 +67,7 @@ import { IBladeToolbar, useBlade, useDataTableSort } from "@vc-shell/framework";
 import { VcBlade, VcDataTable, VcColumn } from "@vc-shell/framework/ui";
 import { useI18n } from "vue-i18n";
 import { useReturnsList } from "../composables";
-import { Return } from "../../../api_client/virtocommerce.marketplacereturn";
+import { Return } from "../../../api_client/VirtoCommerce.MarketplaceReturn";
 import { ReturnStatusTemplate } from "../components";
 
 defineBlade({

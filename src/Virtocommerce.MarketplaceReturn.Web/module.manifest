@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <module>
-  <id>Virtocommerce.MarketplaceReturn</id>
+  <id>VirtoCommerce.MarketplaceReturn</id>
   <version>3.1000.0</version>
   <version-tag></version-tag>
 
@@ -21,11 +21,11 @@
   </owners>
 
   <projectUrl>https://github.com/VirtoCommerce/vc-module-marketplace-return</projectUrl>
-  <iconUrl>Modules/$(Virtocommerce.MarketplaceReturn)/Content/logo.png</iconUrl>
+  <iconUrl>Modules/$(VirtoCommerce.MarketplaceReturn)/Content/logo.png</iconUrl>
   <requireLicenseAcceptance>false</requireLicenseAcceptance>
 
-  <assemblyFile>Virtocommerce.MarketplaceReturn.Web.dll</assemblyFile>
-  <moduleType>Virtocommerce.MarketplaceReturn.Web.Module, Virtocommerce.MarketplaceReturn.Web</moduleType>
+  <assemblyFile>VirtoCommerce.MarketplaceReturn.Web.dll</assemblyFile>
+  <moduleType>VirtoCommerce.MarketplaceReturn.Web.Module, VirtoCommerce.MarketplaceReturn.Web</moduleType>
 
   <releaseNotes>First version.</releaseNotes>
   <copyright>Copyright © 2026 VirtoCommerce. All rights reserved</copyright>

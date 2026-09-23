@@ -9,7 +9,7 @@ import {
   SearchReturnsQuery,
   ISearchReturnsQuery,
   ReturnSearchResult,
-} from "../../../api_client/virtocommerce.marketplacereturn";
+} from "../../../api_client/VirtoCommerce.MarketplaceReturn";
 
 export const RETURN_STATUSES = ["New", "Approved", "Completed", "Canceled", "Processing"];
 

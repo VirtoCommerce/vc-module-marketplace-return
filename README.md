@@ -17,7 +17,7 @@ This module adds two things on top of that:
   module's own endpoints (an ungenerated `Discriminator` column); composition avoids touching the
   base module's schema at all.
 - **A vc-shell (Vue 3 / module-federation) frontend**, shipped as a `vendor-portal` remote
-  module (see `Virtocommerce.MarketplaceReturn.Web/vcmp-return`), not a standalone app -
+  module (see `VirtoCommerce.MarketplaceReturn.Web/vcmp-return`), not a standalone app -
   vendor-portal owns authentication/session.
 
 Deployment scenario: install this module alongside `VirtoCommerce.Return` and
@@ -55,8 +55,7 @@ sellers can self-serve return handling without operator involvement.
 ## Web API
 
 Swagger docs are served per-module at `/docs/{moduleId}/swagger.json`. The module id is
-**case-sensitive** in practice - use `Virtocommerce.MarketplaceReturn` (lowercase "c"), matching
-`<id>` in `module.manifest`, not `VirtoCommerce.MarketplaceReturn`.
+
 
 ## Database Model
 
@@ -69,16 +68,16 @@ Swagger docs are served per-module at `/docs/{moduleId}/swagger.json`. The modul
 
 ## Frontend
 
-`Virtocommerce.MarketplaceReturn.Web/vcmp-return` is a vc-shell sub-app built as a module-federation
+`VirtoCommerce.MarketplaceReturn.Web/vcmp-return` is a vc-shell sub-app built as a module-federation
 remote for vendor-portal (`appId: "vendor-portal"`), not the legacy `<frontendModules>`
 convention some sibling modules still reference. It builds to
-`Virtocommerce.MarketplaceReturn.Web/plugins/vendor-portal/`, which the platform discovers by
+`VirtoCommerce.MarketplaceReturn.Web/plugins/vendor-portal/`, which the platform discovers by
 filesystem convention at `{ModuleRoot}/plugins/{appId}/remoteEntry.js`.
 
 To regenerate the API client after a backend contract change:
 
 ```bash
-cd Virtocommerce.MarketplaceReturn.Web/vcmp-return
+cd VirtoCommerce.MarketplaceReturn.Web/vcmp-return
 yarn generate-api-client
 yarn build:modules-bundle
 ```

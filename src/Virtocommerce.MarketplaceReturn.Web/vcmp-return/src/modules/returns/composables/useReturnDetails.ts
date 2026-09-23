@@ -8,7 +8,7 @@ import {
   Return,
   ReturnLineItem,
   UpdateReturnCommand,
-} from "../../../api_client/virtocommerce.marketplacereturn";
+} from "../../../api_client/VirtoCommerce.MarketplaceReturn";
 
 export interface IUseReturnDetails {
   item: Ref<Return | undefined>;

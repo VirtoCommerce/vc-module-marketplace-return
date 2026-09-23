@@ -4,21 +4,21 @@ VisualStudioVersion = 18.4.11605.240 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E4EB4399-3D78-4A37-81EB-54DC44C71E48}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Virtocommerce.MarketplaceReturn.Web", "src\Virtocommerce.MarketplaceReturn.Web\Virtocommerce.MarketplaceReturn.Web.csproj", "{6D7C188E-3C31-4084-9568-E43533756817}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.MarketplaceReturn.Web", "src\VirtoCommerce.MarketplaceReturn.Web\VirtoCommerce.MarketplaceReturn.Web.csproj", "{6D7C188E-3C31-4084-9568-E43533756817}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Virtocommerce.MarketplaceReturn.Data", "src\Virtocommerce.MarketplaceReturn.Data\Virtocommerce.MarketplaceReturn.Data.csproj", "{A1593B4A-56F0-49DE-8872-477D0355C42D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.MarketplaceReturn.Data", "src\VirtoCommerce.MarketplaceReturn.Data\VirtoCommerce.MarketplaceReturn.Data.csproj", "{A1593B4A-56F0-49DE-8872-477D0355C42D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Virtocommerce.MarketplaceReturn.Core", "src\Virtocommerce.MarketplaceReturn.Core\Virtocommerce.MarketplaceReturn.Core.csproj", "{82F80374-0784-44CC-8799-9861572766BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.MarketplaceReturn.Core", "src\VirtoCommerce.MarketplaceReturn.Core\VirtoCommerce.MarketplaceReturn.Core.csproj", "{82F80374-0784-44CC-8799-9861572766BF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Virtocommerce.MarketplaceReturn.Data.MySql", "src\Virtocommerce.MarketplaceReturn.Data.MySql\Virtocommerce.MarketplaceReturn.Data.MySql.csproj", "{699F50B6-5A13-4604-B5F2-E57341A4BFBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.MarketplaceReturn.Data.MySql", "src\VirtoCommerce.MarketplaceReturn.Data.MySql\VirtoCommerce.MarketplaceReturn.Data.MySql.csproj", "{699F50B6-5A13-4604-B5F2-E57341A4BFBC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Virtocommerce.MarketplaceReturn.Data.PostgreSql", "src\Virtocommerce.MarketplaceReturn.Data.PostgreSql\Virtocommerce.MarketplaceReturn.Data.PostgreSql.csproj", "{EA3A070B-711C-453E-AF90-F0A8AF147A6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.MarketplaceReturn.Data.PostgreSql", "src\VirtoCommerce.MarketplaceReturn.Data.PostgreSql\VirtoCommerce.MarketplaceReturn.Data.PostgreSql.csproj", "{EA3A070B-711C-453E-AF90-F0A8AF147A6C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Virtocommerce.MarketplaceReturn.Data.SqlServer", "src\Virtocommerce.MarketplaceReturn.Data.SqlServer\Virtocommerce.MarketplaceReturn.Data.SqlServer.csproj", "{C2DEFBA6-5B16-4CF6-AEA9-471D7CDF8B05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.MarketplaceReturn.Data.SqlServer", "src\VirtoCommerce.MarketplaceReturn.Data.SqlServer\VirtoCommerce.MarketplaceReturn.Data.SqlServer.csproj", "{C2DEFBA6-5B16-4CF6-AEA9-471D7CDF8B05}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{3BDDD5D1-2DA9-45A1-B076-F1D12A3C1ED2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Virtocommerce.MarketplaceReturn.Tests", "tests\Virtocommerce.MarketplaceReturn.Tests\Virtocommerce.MarketplaceReturn.Tests.csproj", "{9034F3D1-BD7D-47AF-9125-1382B0ED324C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.MarketplaceReturn.Tests", "tests\VirtoCommerce.MarketplaceReturn.Tests\VirtoCommerce.MarketplaceReturn.Tests.csproj", "{9034F3D1-BD7D-47AF-9125-1382B0ED324C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CA0EA1B4-4F53-4D76-9FC5-ABC00AEDCD1F}"
 	ProjectSection(SolutionItems) = preProject
@@ -28,7 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE = LICENSE
 		module.ignore = module.ignore
 		README.md = README.md
-		Virtocommerce.MarketplaceReturn.sln.DotSettings = Virtocommerce.MarketplaceReturn.sln.DotSettings
+		VirtoCommerce.MarketplaceReturn.sln.DotSettings = VirtoCommerce.MarketplaceReturn.sln.DotSettings
 	EndProjectSection
 EndProject
 Global

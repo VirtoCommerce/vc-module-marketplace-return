@@ -23,11 +23,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Virtocommerce.MarketplaceReturn.Core\Virtocommerce.MarketplaceReturn.Core.csproj" />
-    <ProjectReference Include="..\Virtocommerce.MarketplaceReturn.Data\Virtocommerce.MarketplaceReturn.Data.csproj" />
-    <ProjectReference Include="..\Virtocommerce.MarketplaceReturn.Data.MySql\Virtocommerce.MarketplaceReturn.Data.MySql.csproj" />
-    <ProjectReference Include="..\Virtocommerce.MarketplaceReturn.Data.PostgreSql\Virtocommerce.MarketplaceReturn.Data.PostgreSql.csproj" />
-    <ProjectReference Include="..\Virtocommerce.MarketplaceReturn.Data.SqlServer\Virtocommerce.MarketplaceReturn.Data.SqlServer.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.MarketplaceReturn.Core\VirtoCommerce.MarketplaceReturn.Core.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.MarketplaceReturn.Data\VirtoCommerce.MarketplaceReturn.Data.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.MarketplaceReturn.Data.MySql\VirtoCommerce.MarketplaceReturn.Data.MySql.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.MarketplaceReturn.Data.PostgreSql\VirtoCommerce.MarketplaceReturn.Data.PostgreSql.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.MarketplaceReturn.Data.SqlServer\VirtoCommerce.MarketplaceReturn.Data.SqlServer.csproj" />
   </ItemGroup>
   <ItemGroup>
     <ReturnApp Include="plugins\**" />

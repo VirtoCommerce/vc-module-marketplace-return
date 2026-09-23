@@ -11,7 +11,7 @@
     "build:modules-bundle": "vite build --config ./src/modules/vite.config.with-api.mts",
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint --fix --cache '**/*.{ts,vue}'",
-    "generate-api-client": "cross-env node ./node_modules/@vc-shell/api-client-generator/dist/api-client-generator.js --APP_PLATFORM_MODULES='[Virtocommerce.MarketplaceReturn]' --APP_API_CLIENT_DIRECTORY=./src/api_client/ --APP_OUT_DIR=dist --APP_PACKAGE_NAME=api --APP_PACKAGE_VERSION=$npm_package_version"
+    "generate-api-client": "cross-env node ./node_modules/@vc-shell/api-client-generator/dist/api-client-generator.js --APP_PLATFORM_MODULES='[VirtoCommerce.MarketplaceReturn]' --APP_API_CLIENT_DIRECTORY=./src/api_client/ --APP_OUT_DIR=dist --APP_PACKAGE_NAME=api --APP_PACKAGE_VERSION=$npm_package_version"
   },
   "devDependencies": {
     "@types/node": "^20.10.5",

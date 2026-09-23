@@ -133,7 +133,7 @@ import {
 } from "@vc-shell/framework/ui";
 import { useI18n } from "vue-i18n";
 import { useReturnDetails, RETURN_STATUSES } from "../composables";
-import { ReturnLineItem } from "../../../api_client/virtocommerce.marketplacereturn";
+import { ReturnLineItem } from "../../../api_client/VirtoCommerce.MarketplaceReturn";
 import { ReturnLineItemName } from "../components";
 
 defineBlade({

@@ -4,15 +4,15 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Virtocommerce.MarketplaceReturn.Data.Commands;
-using Virtocommerce.MarketplaceReturn.Data.Queries;
+using VirtoCommerce.MarketplaceReturn.Data.Commands;
+using VirtoCommerce.MarketplaceReturn.Data.Queries;
 using VirtoCommerce.MarketplaceVendorModule.Core.Common;
 using VirtoCommerce.MarketplaceVendorModule.Data.Authorization;
 using VirtoCommerce.ReturnModule.Core.Models;
 using VirtoCommerce.ReturnModule.Core.Models.Search;
-using Permissions = Virtocommerce.MarketplaceReturn.Core.ModuleConstants.Security.Permissions;
+using Permissions = VirtoCommerce.MarketplaceReturn.Core.ModuleConstants.Security.Permissions;
 
-namespace Virtocommerce.MarketplaceReturn.Web.Controllers.Api;
+namespace VirtoCommerce.MarketplaceReturn.Web.Controllers.Api;
 
 [Authorize]
 [Route("api/vcmp/return")]

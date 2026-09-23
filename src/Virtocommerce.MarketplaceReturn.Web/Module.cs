@@ -3,14 +3,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Virtocommerce.MarketplaceReturn.Core;
-using Virtocommerce.MarketplaceReturn.Core.Services;
-using Virtocommerce.MarketplaceReturn.Data.Handlers;
-using Virtocommerce.MarketplaceReturn.Data.MySql;
-using Virtocommerce.MarketplaceReturn.Data.PostgreSql;
-using Virtocommerce.MarketplaceReturn.Data.Repositories;
-using Virtocommerce.MarketplaceReturn.Data.Services;
-using Virtocommerce.MarketplaceReturn.Data.SqlServer;
+using VirtoCommerce.MarketplaceReturn.Core;
+using VirtoCommerce.MarketplaceReturn.Core.Services;
+using VirtoCommerce.MarketplaceReturn.Data.Handlers;
+using VirtoCommerce.MarketplaceReturn.Data.MySql;
+using VirtoCommerce.MarketplaceReturn.Data.PostgreSql;
+using VirtoCommerce.MarketplaceReturn.Data.Repositories;
+using VirtoCommerce.MarketplaceReturn.Data.Services;
+using VirtoCommerce.MarketplaceReturn.Data.SqlServer;
 using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
@@ -20,7 +20,7 @@ using VirtoCommerce.Platform.Data.PostgreSql.Extensions;
 using VirtoCommerce.Platform.Data.SqlServer.Extensions;
 using VirtoCommerce.ReturnModule.Core.Events;
 
-namespace Virtocommerce.MarketplaceReturn.Web;
+namespace VirtoCommerce.MarketplaceReturn.Web;
 
 public class Module : IModule, IHasConfiguration
 {
