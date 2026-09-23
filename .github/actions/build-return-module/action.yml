@@ -1,0 +1,17 @@
+# v2.0.0
+name: Build Return Module
+
+runs:
+  using: composite
+
+  steps:
+
+    - name: Install dependencies for Return Module
+      shell: bash
+      working-directory: src/VirtoCommerce.MarketplaceReturn.Web/vcmp-return
+      run: yarn
+
+    - name: Build Return Module
+      shell: bash
+      working-directory:  src/VirtoCommerce.MarketplaceReturn.Web/vcmp-return
+      run: yarn build:modules-bundle
