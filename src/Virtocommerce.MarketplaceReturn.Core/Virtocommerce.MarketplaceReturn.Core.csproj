@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <SonarQubeTestProject>false</SonarQubeTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.1039.0" />
+    <PackageReference Include="VirtoCommerce.ReturnModule.Core" Version="3.1001.0" />
+    <PackageReference Include="VirtoCommerce.MarketplaceVendorModule.Core" Version="3.1001.0" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,47 @@
+{
+  "name": "vcmp-return",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "serve": "cross-env APP_ENV=development vite --force",
+    "preview": "vite preview",
+    "build": "yarn build:app && yarn build:types && yarn build:modules-bundle",
+    "build:app": "cross-env APP_ENV=production vite build",
+    "build:types": "vue-tsc --declaration --emitDeclarationOnly --outDir dist/types",
+    "build:modules-bundle": "vite build --config ./src/modules/vite.config.with-api.mts",
+    "type-check": "vue-tsc --noEmit",
+    "lint": "eslint --fix --cache '**/*.{ts,vue}'",
+    "generate-api-client": "cross-env node ./node_modules/@vc-shell/api-client-generator/dist/api-client-generator.js --APP_PLATFORM_MODULES='[Virtocommerce.MarketplaceReturn]' --APP_API_CLIENT_DIRECTORY=./src/api_client/ --APP_OUT_DIR=dist --APP_PACKAGE_NAME=api --APP_PACKAGE_VERSION=$npm_package_version"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "@typescript-eslint/eslint-plugin": "^6.16.0",
+    "@typescript-eslint/parser": "^6.16.0",
+    "@vc-shell/api-client-generator": "^2.0.0-alpha.28",
+    "@vc-shell/ts-config": "^2.0.0-alpha.28",
+    "@vitejs/plugin-vue": "^5.2.3",
+    "@vue/eslint-config-prettier": "^9.0.0",
+    "@vue/eslint-config-typescript": "^12.0.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.56.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-prettier": "^5.1.2",
+    "eslint-plugin-vue": "^9.19.2",
+    "prettier": "^3.1.1",
+    "sass": "^1.87.0",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.3",
+    "vue-eslint-parser": "^9.3.2",
+    "vue-tsc": "^2.2.10"
+  },
+  "dependencies": {
+    "@vc-shell/config-generator": "^2.0.0-alpha.28",
+    "@vc-shell/framework": "^2.0.0-alpha.28",
+    "@vc-shell/mf-module": "^2.0.0-alpha.28",
+    "@vcmp-vendor-portal/api": "^1.1.39",
+    "@vueuse/core": "^10.7.1",
+    "lodash-es": "^4.17.21",
+    "vue": "^3.5.13",
+    "vue-router": "^4.2.5"
+  }
+}

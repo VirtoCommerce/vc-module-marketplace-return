@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "marketplace-return:access": "Open MarketplaceReturn menu",
+    "marketplace-return:create": "Create MarketplaceReturn related data",
+    "marketplace-return:read": "View MarketplaceReturn related data",
+    "marketplace-return:update": "Update MarketplaceReturn related data",
+    "marketplace-return:delete": "Delete MarketplaceReturn related data"
+  },
+  "settings": {
+    "MarketplaceReturn": {
+      "Enabled": {
+        "title": "MarketplaceReturn Enabled",
+        "description": "MarketplaceReturn Enabled setting"
+      }
+    }
+  }
+}

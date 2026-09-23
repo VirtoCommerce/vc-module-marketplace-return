@@ -1,0 +1,73 @@
+{
+  "RETURNS": {
+    "MENU": {
+      "TITLE": "Returns"
+    },
+    "WIDGET": {
+      "TITLE": "Returns",
+      "CREATE": "Create return",
+      "EMPTY": "No returns for this order yet"
+    },
+    "PAGES": {
+      "LIST": {
+        "TITLE": "Returns",
+        "TOOLBAR": {
+          "ADD": "Add",
+          "REFRESH": "Refresh"
+        },
+        "TABLE": {
+          "TOTALS": "returns",
+          "HEADER": {
+            "NUMBER": "Number",
+            "ORDER_NUMBER": "Order",
+            "STATUS": "Status",
+            "CREATED": "Created"
+          },
+          "FILTER": {
+            "STATUS": {
+              "TITLE": "Status"
+            }
+          }
+        }
+      },
+      "DETAILS": {
+        "NEW_TITLE": "New return",
+        "CLOSE_CONFIRMATION": "You have unsaved changes. Close anyway?",
+        "TOOLBAR": {
+          "SAVE": "Save"
+        },
+        "FORM": {
+          "RETURN_INFO": {
+            "TITLE": "Return info",
+            "NUMBER": "Number",
+            "ORDER_NUMBER": "Order",
+            "CREATED_DATE": "Created",
+            "STATUS": "Status"
+          },
+          "RESOLUTION": {
+            "TITLE": "Resolution",
+            "PLACEHOLDER": "Add a resolution note"
+          },
+          "LINE_ITEMS": {
+            "TITLE": "Items list",
+            "PIC": "Img",
+            "NAME": "Item",
+            "QUANTITY": "Quantity",
+            "AVAILABLE_QUANTITY": "Available",
+            "PRICE": "Price",
+            "REASON": "Reason",
+            "VALIDATION": {
+              "MAX_QUANTITY": "Quantity was capped at {max} - that's all that's left available to return"
+            }
+          }
+        }
+      },
+      "ORDER_PICKER": {
+        "TITLE": "Select order",
+        "ORDER_ID": "Order id",
+        "ORDER_ID_PLACEHOLDER": "Paste the order id to create a return for",
+        "CONTINUE": "Continue"
+      }
+    }
+  }
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module>
+  <id>Virtocommerce.MarketplaceReturn</id>
+  <version>3.1000.0</version>
+  <version-tag></version-tag>
+
+  <platformVersion>3.1039.0</platformVersion>
+  <dependencies>
+    <dependency id="VirtoCommerce.MarketplaceVendor" version="3.1001.0" />
+    <dependency id="VirtoCommerce.Return" version="3.1001.0" />
+  </dependencies>
+
+  <title>VirtoCommerce MarketplaceReturn</title>
+  <description>VirtoCommerce MarketplaceReturn</description>
+
+  <authors>
+    <author>Vladimir Buravlev</author>
+  </authors>
+  <owners>
+    <owner>VirtoCommerce</owner>
+  </owners>
+
+  <projectUrl>https://github.com/VirtoCommerce/vc-module-marketplace-return</projectUrl>
+  <iconUrl>Modules/$(Virtocommerce.MarketplaceReturn)/Content/logo.png</iconUrl>
+  <requireLicenseAcceptance>false</requireLicenseAcceptance>
+
+  <assemblyFile>Virtocommerce.MarketplaceReturn.Web.dll</assemblyFile>
+  <moduleType>Virtocommerce.MarketplaceReturn.Web.Module, Virtocommerce.MarketplaceReturn.Web</moduleType>
+
+  <releaseNotes>First version.</releaseNotes>
+  <copyright>Copyright © 2026 VirtoCommerce. All rights reserved</copyright>
+  <tags>extension module</tags>
+  <useFullTypeNameInSwagger>false</useFullTypeNameInSwagger>
+  <frontendModules>
+    <frontendModule id="vcmp-return" path="vcmp-return/dist">
+      <compatibleWith>
+        <dependency id="@vc-shell/framework">[2.0.0,3.0.0)</dependency>
+      </compatibleWith>
+    </frontendModule>
+  </frontendModules>
+</module>

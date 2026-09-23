@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <IsPackable>false</IsPackable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <SonarQubeTestProject>false</SonarQubeTestProject>
+    <NoWarn>1591;NU1608</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="vcmp-return\dist\**" />
+    <Content Remove="vcmp-return\dist\**" />
+    <EmbeddedResource Remove="vcmp-return\dist\**" />
+    <None Remove="vcmp-return\dist\**" />
+    <Compile Remove="plugins\**" />
+    <Content Remove="plugins\**" />
+    <EmbeddedResource Remove="plugins\**" />
+    <None Remove="plugins\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="Localizations\**">
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Virtocommerce.MarketplaceReturn.Core\Virtocommerce.MarketplaceReturn.Core.csproj" />
+    <ProjectReference Include="..\Virtocommerce.MarketplaceReturn.Data\Virtocommerce.MarketplaceReturn.Data.csproj" />
+    <ProjectReference Include="..\Virtocommerce.MarketplaceReturn.Data.MySql\Virtocommerce.MarketplaceReturn.Data.MySql.csproj" />
+    <ProjectReference Include="..\Virtocommerce.MarketplaceReturn.Data.PostgreSql\Virtocommerce.MarketplaceReturn.Data.PostgreSql.csproj" />
+    <ProjectReference Include="..\Virtocommerce.MarketplaceReturn.Data.SqlServer\Virtocommerce.MarketplaceReturn.Data.SqlServer.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ReturnApp Include="plugins\**" />
+  </ItemGroup>
+  <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
+    <Copy SourceFiles="@(ReturnApp)" DestinationFiles="$(PublishDir)\..\%(Identity)" />
+  </Target>
+</Project>
