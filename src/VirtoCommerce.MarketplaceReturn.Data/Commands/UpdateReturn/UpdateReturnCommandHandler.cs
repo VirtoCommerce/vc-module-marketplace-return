@@ -44,17 +44,18 @@ public class UpdateReturnCommandHandler : ICommandHandler<UpdateReturnCommand>
 
         var orderReturn = request.OrderReturn;
 
-        var existedSellerReturn = await _sellerReturnService.GetSellerReturnById(request.SellerId, request.OrderReturn.Id);
+        await _returnService.SaveChangesAsync([orderReturn]);
+
+        var existedSellerReturn = await _sellerReturnService.GetSellerReturnById(request.SellerId, orderReturn.Id);
 
         if (existedSellerReturn == null)
         {
             existedSellerReturn = ExType<SellerReturn>.New();
             existedSellerReturn.SellerId = request.SellerId;
-            existedSellerReturn.ReturnId = request.OrderReturn.Id;
+            existedSellerReturn.SellerName = request.SellerName;
+            existedSellerReturn.ReturnId = orderReturn.Id;
 
             await _sellerReturnCrudService.SaveChangesAsync([existedSellerReturn]);
         }
-
-        await _returnService.SaveChangesAsync([orderReturn]);
     }
 }

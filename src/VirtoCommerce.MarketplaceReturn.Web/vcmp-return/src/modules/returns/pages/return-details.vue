@@ -61,7 +61,9 @@
               :total-count="lineItemsView.length"
               edit-mode="cell"
               state-key="return-details-line-items"
+              :add-row="{ enabled: addableItems.length > 0, label: t('RETURNS.PAGES.DETAILS.FORM.LINE_ITEMS.TOOLBAR.ADD_ITEM') }"
               @cell-edit-complete="onEditComplete"
+              @row-add="onAddItem"
             >
               <VcColumn
                 id="imageUrl"
@@ -135,6 +137,7 @@ import { useI18n } from "vue-i18n";
 import { useReturnDetails, RETURN_STATUSES } from "../composables";
 import { ReturnLineItem } from "../../../api_client/VirtoCommerce.MarketplaceReturn";
 import { ReturnLineItemName } from "../components";
+import { ReturnLineItemCandidate } from "../types";
 
 defineBlade({
   url: "/return-details",
@@ -143,9 +146,10 @@ defineBlade({
 
 const { t } = useI18n({ useScope: "global" });
 const { showConfirmation, showInfo } = usePopup();
-const { param, options, callParent, onBeforeClose } = useBlade<{ orderId?: string }>();
+const { param, options, openBlade, exposeToChildren, callParent, onBeforeClose } = useBlade<{ orderId?: string }>();
 
-const { item, pristineItem, isModified, loading, loadReturn, loadForOrder, saveReturn } = useReturnDetails();
+const { item, pristineItem, availableQuantities, isModified, loading, loadReturn, loadForOrder, saveReturn } =
+  useReturnDetails();
 
 const statuses = RETURN_STATUSES;
 
@@ -162,6 +166,21 @@ const lineItemsView = computed(() => {
       imageUrl: orderItem?.imageUrl,
     };
   });
+});
+
+const addableItems = computed<ReturnLineItemCandidate[]>(() => {
+  const addedOrderLineItemIds = new Set((item.value?.lineItems ?? []).map((lineItem) => lineItem.orderLineItemId));
+  return (item.value?.order?.items ?? [])
+    .filter((orderItem) => orderItem.id && !addedOrderLineItemIds.has(orderItem.id))
+    .map((orderItem) => ({
+      orderLineItemId: orderItem.id as string,
+      name: orderItem.name,
+      sku: orderItem.sku,
+      imageUrl: orderItem.imageUrl,
+      price: orderItem.price,
+      availableQuantity: availableQuantities.value[orderItem.id as string] ?? 0,
+    }))
+    .filter((candidate) => candidate.availableQuantity > 0);
 });
 
 const bladeTitle = computed(() => item.value?.number || t("RETURNS.PAGES.DETAILS.NEW_TITLE"));
@@ -192,11 +211,22 @@ function onEditComplete(event: { data: unknown; field: string; newValue: unknown
     return;
   }
 
+  const currentLineItem = item.value.lineItems[event.index];
+  if (!currentLineItem) {
+    return;
+  }
+
   let newValue = event.newValue;
 
   if (event.field === "quantity") {
-    const pristineLineItem = pristineItem.value?.lineItems?.[event.index];
-    const max = (pristineLineItem?.quantity ?? 0) + (pristineLineItem?.availableQuantity ?? 0);
+    const pristineLineItem = currentLineItem.orderLineItemId
+      ? pristineItem.value?.lineItems?.find((lineItem) => lineItem.orderLineItemId === currentLineItem.orderLineItemId)
+      : undefined;
+    // A line item just added via the picker has no pristine counterpart yet - its own
+    // availableQuantity (captured at add time) is the ceiling instead.
+    const max = pristineLineItem
+      ? (pristineLineItem.quantity ?? 0) + (pristineLineItem.availableQuantity ?? 0)
+      : (currentLineItem.availableQuantity ?? 0);
     const numeric = Number(event.newValue);
     const clamped = Math.min(Math.max(Number.isFinite(numeric) ? numeric : 0, 0), max);
     if (clamped !== numeric) {
@@ -207,6 +237,35 @@ function onEditComplete(event: { data: unknown; field: string; newValue: unknown
 
   item.value.lineItems[event.index][event.field as keyof ReturnLineItem] = newValue as never;
 }
+
+function onAddItem(event: { defaults: Record<string, unknown>; cancel: () => void }) {
+  event.cancel();
+  openBlade({
+    name: "ReturnLineItemPicker",
+    options: { candidates: addableItems.value },
+  });
+}
+
+function addLineItems(args: { items: ReturnLineItemCandidate[] }) {
+  if (!item.value) {
+    return;
+  }
+  if (!item.value.lineItems) {
+    item.value.lineItems = [];
+  }
+  for (const candidate of args.items) {
+    item.value.lineItems.push(
+      new ReturnLineItem({
+        orderLineItemId: candidate.orderLineItemId,
+        availableQuantity: candidate.availableQuantity,
+        quantity: Math.min(1, candidate.availableQuantity),
+        price: candidate.price ?? 0,
+      }),
+    );
+  }
+}
+
+exposeToChildren({ addLineItems });
 
 onMounted(async () => {
   if (param.value) {

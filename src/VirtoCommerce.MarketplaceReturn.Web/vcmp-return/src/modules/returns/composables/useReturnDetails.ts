@@ -2,17 +2,19 @@ import { Ref, ref, inject, ComputedRef } from "vue";
 import { useRoute } from "vue-router";
 import { toRef } from "@vueuse/core";
 import { useAsync, useApiClient, useLoading, useModificationTracker } from "@vc-shell/framework";
-import type { Seller } from "@vcmp-vendor-portal/api/marketplacevendor";
+import { VcmpSellerOrdersClient, type Seller } from "@vcmp-vendor-portal/api/marketplacevendor";
 import {
   VcmpReturnClient,
   Return,
-  ReturnLineItem,
+  CustomerOrder,
+  OrderLineItem,
   UpdateReturnCommand,
 } from "../../../api_client/VirtoCommerce.MarketplaceReturn";
 
 export interface IUseReturnDetails {
   item: Ref<Return | undefined>;
   pristineItem: Ref<Return | undefined>;
+  availableQuantities: Ref<Record<string, number>>;
   isModified: Ref<boolean>;
   loading: ComputedRef<boolean>;
   loadReturn: (id: string) => Promise<void>;
@@ -22,6 +24,7 @@ export interface IUseReturnDetails {
 
 export function useReturnDetails(): IUseReturnDetails {
   const { getApiClient } = useApiClient(VcmpReturnClient);
+  const { getApiClient: getOrderApiClient } = useApiClient(VcmpSellerOrdersClient);
 
   const route = useRoute();
   const currentSeller = inject(
@@ -31,6 +34,30 @@ export function useReturnDetails(): IUseReturnDetails {
 
   const item = ref<Return>();
   const { currentValue, pristineValue, isModified, resetModificationState } = useModificationTracker(item);
+  const availableQuantities = ref<Record<string, number>>({});
+
+  async function loadOrder(orderId: string): Promise<CustomerOrder | undefined> {
+    const orderApiClient = await getOrderApiClient();
+    const order = await orderApiClient.getById(orderId);
+    if (!order) {
+      return undefined;
+    }
+
+    return new CustomerOrder({
+      number: order.number,
+      items: (order.items ?? []).map(
+        (orderItem) =>
+          new OrderLineItem({
+            id: orderItem.id,
+            name: orderItem.name,
+            sku: orderItem.sku,
+            imageUrl: orderItem.imageUrl,
+            price: orderItem.price,
+            quantity: orderItem.quantity,
+          }),
+      ),
+    });
+  }
 
   const { action: loadReturn, loading: loadingReturn } = useAsync<string>(async (id) => {
     if (!id) {
@@ -39,6 +66,9 @@ export function useReturnDetails(): IUseReturnDetails {
 
     const apiClient = await getApiClient();
     const result = await apiClient.getReturnById(id);
+    if (result.orderId) {
+      availableQuantities.value = await apiClient.getAvailableQuantities(result.orderId);
+    }
     resetModificationState(result);
     currentValue.value = result;
   });
@@ -49,20 +79,14 @@ export function useReturnDetails(): IUseReturnDetails {
     }
 
     const apiClient = await getApiClient();
-    const availableQuantities = await apiClient.getAvailableQuantities(orderId);
+    const [quantities, order] = await Promise.all([apiClient.getAvailableQuantities(orderId), loadOrder(orderId)]);
+    availableQuantities.value = quantities;
 
     const draft = new Return({
       orderId,
       status: "New",
-      lineItems: Object.entries(availableQuantities).map(
-        ([orderLineItemId, availableQuantity]) =>
-          new ReturnLineItem({
-            orderLineItemId,
-            availableQuantity,
-            quantity: 0,
-            price: 0,
-          }),
-      ),
+      order,
+      lineItems: [],
     });
 
     resetModificationState(draft);
@@ -81,7 +105,11 @@ export function useReturnDetails(): IUseReturnDetails {
       const pristineLineItem = lineItem.orderLineItemId
         ? pristineLineItemsByOrderLineItemId.get(lineItem.orderLineItemId)
         : undefined;
-      const max = (pristineLineItem?.quantity ?? 0) + (pristineLineItem?.availableQuantity ?? 0);
+      // A line item just added via the picker has no pristine counterpart yet - its own
+      // availableQuantity (captured at add time) is the ceiling instead.
+      const max = pristineLineItem
+        ? (pristineLineItem.quantity ?? 0) + (pristineLineItem.availableQuantity ?? 0)
+        : (lineItem.availableQuantity ?? 0);
       const numeric = Number(lineItem.quantity);
       lineItem.quantity = Math.min(Math.max(Number.isFinite(numeric) ? numeric : 0, 0), max);
     }
@@ -100,6 +128,7 @@ export function useReturnDetails(): IUseReturnDetails {
   return {
     item: currentValue,
     pristineItem: pristineValue,
+    availableQuantities,
     isModified,
     loading: useLoading(loadingReturn, loadingOrder, savingReturn),
     loadReturn,

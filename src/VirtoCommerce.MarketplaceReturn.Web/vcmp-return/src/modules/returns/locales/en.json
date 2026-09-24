@@ -56,6 +56,9 @@
             "AVAILABLE_QUANTITY": "Available",
             "PRICE": "Price",
             "REASON": "Reason",
+            "TOOLBAR": {
+              "ADD_ITEM": "Add item"
+            },
             "VALIDATION": {
               "MAX_QUANTITY": "Quantity was capped at {max} - that's all that's left available to return"
             }
@@ -64,9 +67,27 @@
       },
       "ORDER_PICKER": {
         "TITLE": "Select order",
-        "ORDER_ID": "Order id",
-        "ORDER_ID_PLACEHOLDER": "Paste the order id to create a return for",
-        "CONTINUE": "Continue"
+        "TABLE": {
+          "HEADER": {
+            "NUMBER": "Order",
+            "STATUS": "Status",
+            "TOTAL": "Total",
+            "CREATED": "Created"
+          }
+        }
+      },
+      "LINE_ITEM_PICKER": {
+        "TITLE": "Select order items",
+        "TABLE": {
+          "HEADER": {
+            "IMAGE": "Img",
+            "NAME": "Item",
+            "AVAILABLE": "Available"
+          }
+        },
+        "TOOLBAR": {
+          "CONFIRM": "Add"
+        }
       }
     }
   }
