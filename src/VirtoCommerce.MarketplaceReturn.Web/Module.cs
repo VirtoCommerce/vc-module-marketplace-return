@@ -11,9 +11,9 @@ using VirtoCommerce.MarketplaceReturn.Data.PostgreSql;
 using VirtoCommerce.MarketplaceReturn.Data.Repositories;
 using VirtoCommerce.MarketplaceReturn.Data.Services;
 using VirtoCommerce.MarketplaceReturn.Data.SqlServer;
+using VirtoCommerce.MarketplaceReturn.Web.Authorization;
 using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.Modularity;
-using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Data.MySql.Extensions;
 using VirtoCommerce.Platform.Data.PostgreSql.Extensions;
@@ -72,11 +72,8 @@ public class Module : IModule, IHasConfiguration
 
         appBuilder.RegisterEventHandler<ReturnChangedEvent, ReturnCreatedEventHandler>();
 
-        // Register permissions
-        var permissionsRegistrar = serviceProvider.GetRequiredService<IPermissionsRegistrar>();
-        permissionsRegistrar.RegisterPermissions(ModuleInfo.Id, "MarketplaceReturn", ModuleConstants.Security.Permissions.AllPermissions);
+        appBuilder.UseModuleAuthorization();
 
-        // Apply migrations (creates this module's own VcmpReturn table; the base Return table is untouched)
         using var serviceScope = serviceProvider.CreateScope();
         using var dbContext = serviceScope.ServiceProvider.GetRequiredService<SellerReturnDbContext>();
         dbContext.Database.Migrate();

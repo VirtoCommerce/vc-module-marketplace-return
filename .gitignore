@@ -337,3 +337,6 @@ ASALocalRun/
 .nuke
 dist/
 **/Properties/launchSettings.json
+
+# vcmp-return frontend build output, copied here on publish
+src/VirtoCommerce.MarketplaceReturn.Web/plugins/

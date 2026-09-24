@@ -1,4 +1,5 @@
 export interface ReturnLineItemCandidate {
+  id: string;
   orderLineItemId: string;
   name?: string;
   sku?: string;

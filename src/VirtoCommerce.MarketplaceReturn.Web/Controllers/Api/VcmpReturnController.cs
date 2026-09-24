@@ -10,7 +10,7 @@ using VirtoCommerce.MarketplaceVendorModule.Core.Common;
 using VirtoCommerce.MarketplaceVendorModule.Data.Authorization;
 using VirtoCommerce.ReturnModule.Core.Models;
 using VirtoCommerce.ReturnModule.Core.Models.Search;
-using Permissions = VirtoCommerce.MarketplaceReturn.Core.ModuleConstants.Security.Permissions;
+using Permissions = VirtoCommerce.ReturnModule.Core.ModuleConstants.Security.Permissions;
 
 namespace VirtoCommerce.MarketplaceReturn.Web.Controllers.Api;
 
@@ -88,7 +88,6 @@ public class VcmpReturnController : Controller
     /// </summary>
     [HttpGet]
     [Route("available-quantities/{orderId}")]
-    [Authorize(Permissions.Read)]
     public async Task<ActionResult<Dictionary<string, int>>> GetAvailableQuantities(string orderId)
     {
         var query = ExType<GetAvailableQuantitiesQuery>.New();

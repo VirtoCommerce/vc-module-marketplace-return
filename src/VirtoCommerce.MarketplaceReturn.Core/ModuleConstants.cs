@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
 
 namespace VirtoCommerce.MarketplaceReturn.Core;
@@ -7,22 +9,49 @@ public static class ModuleConstants
 {
     public static class Security
     {
-        public static class Permissions
+        public static class Roles
         {
-            public const string Access = "marketplace-return:access";
-            public const string Create = "marketplace-return:create";
-            public const string Read = "marketplace-return:read";
-            public const string Update = "marketplace-return:update";
-            public const string Delete = "marketplace-return:delete";
+            public static readonly Role Operator = new()
+            {
+                Id = "vcmp-operator-role",
+                Permissions = new[]
+                {
+                    ReturnModule.Core.ModuleConstants.Security.Permissions.Access,
+                    ReturnModule.Core.ModuleConstants.Security.Permissions.Read,
+                    ReturnModule.Core.ModuleConstants.Security.Permissions.Update,
+                }
+                .Select(x => new Permission { GroupName = "Return", Name = x })
+                .ToList()
+            };
 
-            public static string[] AllPermissions { get; } =
-            [
-                Access,
-                Create,
-                Read,
-                Update,
-                Delete,
-            ];
+            public static readonly Role VendorOwner = new()
+            {
+                Id = "vcmp-owner-role",
+                Permissions = new[]
+                {
+                    ReturnModule.Core.ModuleConstants.Security.Permissions.Access,
+                    ReturnModule.Core.ModuleConstants.Security.Permissions.Read,
+                    ReturnModule.Core.ModuleConstants.Security.Permissions.Update,
+                }
+                .Select(x => new Permission { GroupName = "Return", Name = x })
+                .ToList()
+            };
+
+            public static readonly Role VendorAdmin = new()
+            {
+                Id = "vcmp-admin-role",
+                Permissions = new[]
+                {
+                    ReturnModule.Core.ModuleConstants.Security.Permissions.Access,
+                    ReturnModule.Core.ModuleConstants.Security.Permissions.Read,
+                    ReturnModule.Core.ModuleConstants.Security.Permissions.Update,
+                }
+                .Select(x => new Permission { GroupName = "Return", Name = x })
+                .ToList()
+            };
+
+            public static Role[] AllRoles = { Operator, VendorOwner, VendorAdmin };
+
         }
     }
 

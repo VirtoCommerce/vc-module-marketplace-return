@@ -173,6 +173,7 @@ const addableItems = computed<ReturnLineItemCandidate[]>(() => {
   return (item.value?.order?.items ?? [])
     .filter((orderItem) => orderItem.id && !addedOrderLineItemIds.has(orderItem.id))
     .map((orderItem) => ({
+      id: orderItem.id as string,
       orderLineItemId: orderItem.id as string,
       name: orderItem.name,
       sku: orderItem.sku,
