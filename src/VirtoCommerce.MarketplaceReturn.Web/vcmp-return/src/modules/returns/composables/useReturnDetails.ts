@@ -98,18 +98,12 @@ export function useReturnDetails(): IUseReturnDetails {
       return;
     }
 
-    const pristineLineItemsByOrderLineItemId = new Map(
-      (pristineValue.value?.lineItems ?? []).map((lineItem) => [lineItem.orderLineItemId, lineItem]),
+    const orderItemsById = new Map(
+      (currentValue.value.order?.items ?? []).map((orderItem) => [orderItem.id, orderItem]),
     );
     for (const lineItem of currentValue.value.lineItems ?? []) {
-      const pristineLineItem = lineItem.orderLineItemId
-        ? pristineLineItemsByOrderLineItemId.get(lineItem.orderLineItemId)
-        : undefined;
-      // A line item just added via the picker has no pristine counterpart yet - its own
-      // availableQuantity (captured at add time) is the ceiling instead.
-      const max = pristineLineItem
-        ? (pristineLineItem.quantity ?? 0) + (pristineLineItem.availableQuantity ?? 0)
-        : (lineItem.availableQuantity ?? 0);
+      const orderItem = lineItem.orderLineItemId ? orderItemsById.get(lineItem.orderLineItemId) : undefined;
+      const max = orderItem?.quantity ?? (lineItem.quantity ?? 0) + (lineItem.availableQuantity ?? 0);
       const numeric = Number(lineItem.quantity);
       lineItem.quantity = Math.min(Math.max(Number.isFinite(numeric) ? numeric : 0, 0), max);
     }

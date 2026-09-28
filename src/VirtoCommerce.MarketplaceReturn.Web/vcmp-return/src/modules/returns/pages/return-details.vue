@@ -59,8 +59,8 @@
             <VcDataTable
               :items="lineItemsView"
               :total-count="lineItemsView.length"
-              edit-mode="cell"
-              state-key="return-details-line-items"
+              edit-mode="inline"
+              state-key="return-details-line-items-v2"
               :add-row="{ enabled: addableItems.length > 0, label: t('RETURNS.PAGES.DETAILS.FORM.LINE_ITEMS.TOOLBAR.ADD_ITEM') }"
               @cell-edit-complete="onEditComplete"
               @row-add="onAddItem"
@@ -85,16 +85,23 @@
 
               <VcColumn
                 id="quantity"
-                :title="t('RETURNS.PAGES.DETAILS.FORM.LINE_ITEMS.QUANTITY')"
+                :title="t('RETURNS.PAGES.DETAILS.FORM.LINE_ITEMS.RETURNED_QUANTITY')"
                 :always-visible="true"
                 type="number"
-                editable
-                :rules="{ min_value: 1, required: true }"
-              />
+              >
+                <template #body="{ data, index }">
+                  <VcInput
+                    :key="`quantity-${index}-${quantityRevision[index] ?? 0}`"
+                    type="number"
+                    :model-value="data.quantity"
+                    @update:model-value="onQuantityChange(index, $event)"
+                  />
+                </template>
+              </VcColumn>
 
               <VcColumn
-                id="availableQuantity"
-                :title="t('RETURNS.PAGES.DETAILS.FORM.LINE_ITEMS.AVAILABLE_QUANTITY')"
+                id="orderedQuantity"
+                :title="t('RETURNS.PAGES.DETAILS.FORM.LINE_ITEMS.ORDERED_QUANTITY')"
                 type="number"
               />
 
@@ -107,6 +114,7 @@
               <VcColumn
                 id="reason"
                 :title="t('RETURNS.PAGES.DETAILS.FORM.LINE_ITEMS.REASON')"
+                editable
               />
             </VcDataTable>
           </VcCard>
@@ -117,7 +125,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { IBladeToolbar, useBlade, usePopup } from "@vc-shell/framework";
 import {
   VcBlade,
@@ -132,6 +140,7 @@ import {
   VcTextarea,
   VcDataTable,
   VcColumn,
+  VcInput,
 } from "@vc-shell/framework/ui";
 import { useI18n } from "vue-i18n";
 import { useReturnDetails, RETURN_STATUSES } from "../composables";
@@ -145,11 +154,10 @@ defineBlade({
 });
 
 const { t } = useI18n({ useScope: "global" });
-const { showConfirmation, showInfo } = usePopup();
+const { showConfirmation } = usePopup();
 const { param, options, openBlade, exposeToChildren, callParent, onBeforeClose } = useBlade<{ orderId?: string }>();
 
-const { item, pristineItem, availableQuantities, isModified, loading, loadReturn, loadForOrder, saveReturn } =
-  useReturnDetails();
+const { item, availableQuantities, isModified, loading, loadReturn, loadForOrder, saveReturn } = useReturnDetails();
 
 const statuses = RETURN_STATUSES;
 
@@ -159,11 +167,13 @@ const lineItemsView = computed(() => {
   const orderItemsById = new Map((item.value?.order?.items ?? []).map((orderItem) => [orderItem.id, orderItem]));
   return (item.value?.lineItems ?? []).map((lineItem) => {
     const orderItem = lineItem.orderLineItemId ? orderItemsById.get(lineItem.orderLineItemId) : undefined;
+    const orderedQuantity = orderItem?.quantity ?? (lineItem.quantity ?? 0) + (lineItem.availableQuantity ?? 0);
     return {
       ...lineItem,
       name: orderItem?.name,
       sku: orderItem?.sku,
       imageUrl: orderItem?.imageUrl,
+      orderedQuantity,
     };
   });
 });
@@ -180,6 +190,7 @@ const addableItems = computed<ReturnLineItemCandidate[]>(() => {
       imageUrl: orderItem.imageUrl,
       price: orderItem.price,
       availableQuantity: availableQuantities.value[orderItem.id as string] ?? 0,
+      orderedQuantity: orderItem.quantity ?? 0,
     }))
     .filter((candidate) => candidate.availableQuantity > 0);
 });
@@ -217,26 +228,29 @@ function onEditComplete(event: { data: unknown; field: string; newValue: unknown
     return;
   }
 
-  let newValue = event.newValue;
+  currentLineItem[event.field as keyof ReturnLineItem] = event.newValue as never;
+}
 
-  if (event.field === "quantity") {
-    const pristineLineItem = currentLineItem.orderLineItemId
-      ? pristineItem.value?.lineItems?.find((lineItem) => lineItem.orderLineItemId === currentLineItem.orderLineItemId)
-      : undefined;
-    // A line item just added via the picker has no pristine counterpart yet - its own
-    // availableQuantity (captured at add time) is the ceiling instead.
-    const max = pristineLineItem
-      ? (pristineLineItem.quantity ?? 0) + (pristineLineItem.availableQuantity ?? 0)
-      : (currentLineItem.availableQuantity ?? 0);
-    const numeric = Number(event.newValue);
-    const clamped = Math.min(Math.max(Number.isFinite(numeric) ? numeric : 0, 0), max);
-    if (clamped !== numeric) {
-      showInfo(t("RETURNS.PAGES.DETAILS.FORM.LINE_ITEMS.VALIDATION.MAX_QUANTITY", { max }));
-    }
-    newValue = clamped;
+const quantityRevision = ref<number[]>([]);
+
+function onQuantityChange(index: number, value: unknown) {
+  if (!item.value?.lineItems) {
+    return;
   }
 
-  item.value.lineItems[event.index][event.field as keyof ReturnLineItem] = newValue as never;
+  const currentLineItem = item.value.lineItems[index];
+  if (!currentLineItem) {
+    return;
+  }
+
+  const max = lineItemsView.value[index]?.orderedQuantity ?? 0;
+  const numeric = Number(value);
+  const clamped = Math.min(Math.max(Number.isFinite(numeric) ? numeric : 0, 0), max);
+  if (clamped !== numeric) {
+    quantityRevision.value[index] = (quantityRevision.value[index] ?? 0) + 1;
+  }
+
+  currentLineItem.quantity = clamped;
 }
 
 function onAddItem(event: { defaults: Record<string, unknown>; cancel: () => void }) {
@@ -259,7 +273,8 @@ function addLineItems(args: { items: ReturnLineItemCandidate[] }) {
       new ReturnLineItem({
         orderLineItemId: candidate.orderLineItemId,
         availableQuantity: candidate.availableQuantity,
-        quantity: Math.min(1, candidate.availableQuantity),
+        quantity: Math.min(candidate.quantity ?? candidate.orderedQuantity, candidate.orderedQuantity),
+        reason: candidate.reason,
         price: candidate.price ?? 0,
       }),
     );

@@ -1,21 +1,58 @@
 <template>
-  <VcBlade :title="title" :toolbar-items="bladeToolbar" width="40%">
-    <VcTable
+  <VcBlade :title="title" :toolbar-items="bladeToolbar" width="50%">
+    <VcDataTable
+      v-model:selection="selectedItems"
       :items="candidates"
-      :columns="columns"
+      :total-count="candidates.length"
+      selection-mode="multiple"
+      edit-mode="inline"
       state-key="return_line_item_picker"
-      multiselect
-      @selection-changed="onSelectionChanged"
-    />
+      @cell-edit-complete="onEditComplete"
+    >
+      <VcColumn
+        id="imageUrl"
+        :title="t('RETURNS.PAGES.LINE_ITEM_PICKER.TABLE.HEADER.IMAGE')"
+        width="60px"
+        type="image"
+        class="tw-pr-0"
+      />
+
+      <VcColumn id="name" :title="t('RETURNS.PAGES.LINE_ITEM_PICKER.TABLE.HEADER.NAME')" :always-visible="true">
+        <template #body="{ data }">
+          <ReturnLineItemName :name="data.name" :sku="data.sku" />
+        </template>
+      </VcColumn>
+
+      <VcColumn
+        id="quantity"
+        :title="t('RETURNS.PAGES.LINE_ITEM_PICKER.TABLE.HEADER.RETURNED')"
+        :always-visible="true"
+        type="number"
+      >
+        <template #body="{ data, index }">
+          <VcInput
+            :key="`quantity-${index}-${quantityRevision[index] ?? 0}`"
+            type="number"
+            :model-value="data.quantity"
+            @update:model-value="onQuantityChange(index, $event)"
+          />
+        </template>
+      </VcColumn>
+
+      <VcColumn id="orderedQuantity" :title="t('RETURNS.PAGES.LINE_ITEM_PICKER.TABLE.HEADER.ORDERED')" type="number" />
+
+      <VcColumn id="reason" :title="t('RETURNS.PAGES.LINE_ITEM_PICKER.TABLE.HEADER.REASON')" editable />
+    </VcDataTable>
   </VcBlade>
 </template>
 
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import { IBladeToolbar, ITableColumns, useBlade } from "@vc-shell/framework";
-import { VcBlade, VcTable } from "@vc-shell/framework/ui";
+import { IBladeToolbar, useBlade } from "@vc-shell/framework";
+import { VcBlade, VcDataTable, VcColumn, VcInput } from "@vc-shell/framework/ui";
 import { useI18n } from "vue-i18n";
 import { ReturnLineItemCandidate } from "../types";
+import { ReturnLineItemName } from "../components";
 
 defineBlade({
   name: "ReturnLineItemPicker",
@@ -25,26 +62,15 @@ const { t } = useI18n({ useScope: "global" });
 const { closeSelf, callParent, options } = useBlade<{ candidates: ReturnLineItemCandidate[] }>();
 
 const title = t("RETURNS.PAGES.LINE_ITEM_PICKER.TITLE");
-const candidates = computed(() => options.value?.candidates ?? []);
-const selectedItems = ref<ReturnLineItemCandidate[]>([]);
 
-const columns = ref<ITableColumns[]>([
-  {
-    id: "imageUrl",
-    title: computed(() => t("RETURNS.PAGES.LINE_ITEM_PICKER.TABLE.HEADER.IMAGE")),
-    width: "60px",
-    type: "image",
-  },
-  {
-    id: "name",
-    title: computed(() => t("RETURNS.PAGES.LINE_ITEM_PICKER.TABLE.HEADER.NAME")),
-    alwaysVisible: true,
-  },
-  {
-    id: "availableQuantity",
-    title: computed(() => t("RETURNS.PAGES.LINE_ITEM_PICKER.TABLE.HEADER.AVAILABLE")),
-  },
-]);
+const candidates = ref<ReturnLineItemCandidate[]>(
+  (options.value?.candidates ?? []).map((candidate) => ({
+    ...candidate,
+    quantity: candidate.orderedQuantity,
+    reason: candidate.reason ?? "",
+  })),
+);
+const selectedItems = ref<ReturnLineItemCandidate[]>([]);
 
 const bladeToolbar = computed((): IBladeToolbar[] => [
   {
@@ -59,7 +85,29 @@ const bladeToolbar = computed((): IBladeToolbar[] => [
   },
 ]);
 
-function onSelectionChanged(selected: ReturnLineItemCandidate[]) {
-  selectedItems.value = selected;
+function onEditComplete(event: { data: unknown; field: string; newValue: unknown; index: number }) {
+  const candidate = candidates.value[event.index];
+  if (!candidate) {
+    return;
+  }
+
+  candidate[event.field as "reason"] = event.newValue as never;
+}
+
+const quantityRevision = ref<number[]>([]);
+
+function onQuantityChange(index: number, value: unknown) {
+  const candidate = candidates.value[index];
+  if (!candidate) {
+    return;
+  }
+
+  const max = candidate.orderedQuantity;
+  const numeric = Number(value);
+  const clamped = Math.min(Math.max(Number.isFinite(numeric) ? numeric : 0, 0), max);
+  if (clamped !== numeric) {
+    quantityRevision.value[index] = (quantityRevision.value[index] ?? 0) + 1;
+  }
+  candidate.quantity = clamped;
 }
 </script>

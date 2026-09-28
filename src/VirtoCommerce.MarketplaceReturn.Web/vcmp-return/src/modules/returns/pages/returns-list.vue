@@ -11,7 +11,7 @@
       :pagination="{ currentPage, pages }"
       :global-filters="globalFilters"
       :show-all-columns="expanded"
-      state-key="RETURNS"
+      :state-key="options?.orderId ? 'RETURNS_FOR_ORDER' : 'RETURNS_LIST'"
       :searchable="true"
       @row-click="onItemClick"
       @pagination-click="onPaginationClick"
@@ -27,6 +27,7 @@
       />
 
       <VcColumn
+        v-if="!options?.orderId"
         id="orderId"
         :title="t('RETURNS.PAGES.LIST.TABLE.HEADER.ORDER_NUMBER')"
         :always-visible="true"

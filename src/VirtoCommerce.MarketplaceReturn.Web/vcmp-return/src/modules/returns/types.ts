@@ -6,4 +6,7 @@ export interface ReturnLineItemCandidate {
   imageUrl?: string;
   price?: number;
   availableQuantity: number;
+  orderedQuantity: number;
+  quantity?: number;
+  reason?: string;
 }
