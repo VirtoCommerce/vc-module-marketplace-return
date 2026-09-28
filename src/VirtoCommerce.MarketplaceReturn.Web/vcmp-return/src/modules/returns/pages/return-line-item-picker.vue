@@ -7,7 +7,6 @@
       selection-mode="multiple"
       edit-mode="inline"
       state-key="return_line_item_picker"
-      @cell-edit-complete="onEditComplete"
     >
       <VcColumn
         id="imageUrl"
@@ -41,7 +40,13 @@
 
       <VcColumn id="orderedQuantity" :title="t('RETURNS.PAGES.LINE_ITEM_PICKER.TABLE.HEADER.ORDERED')" type="number" />
 
-      <VcColumn id="reason" :title="t('RETURNS.PAGES.LINE_ITEM_PICKER.TABLE.HEADER.REASON')" editable />
+      <VcColumn id="reason" :title="t('RETURNS.PAGES.LINE_ITEM_PICKER.TABLE.HEADER.REASON')">
+        <template #body="{ data, index }">
+          <div @keydown.space.stop>
+            <VcInput :model-value="data.reason" @update:model-value="onReasonChange(index, $event)" />
+          </div>
+        </template>
+      </VcColumn>
     </VcDataTable>
   </VcBlade>
 </template>
@@ -85,13 +90,13 @@ const bladeToolbar = computed((): IBladeToolbar[] => [
   },
 ]);
 
-function onEditComplete(event: { data: unknown; field: string; newValue: unknown; index: number }) {
-  const candidate = candidates.value[event.index];
+function onReasonChange(index: number, value: unknown) {
+  const candidate = candidates.value[index];
   if (!candidate) {
     return;
   }
 
-  candidate[event.field as "reason"] = event.newValue as never;
+  candidate.reason = value as string;
 }
 
 const quantityRevision = ref<number[]>([]);

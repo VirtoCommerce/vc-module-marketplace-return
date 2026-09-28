@@ -62,7 +62,8 @@
               edit-mode="inline"
               state-key="return-details-line-items-v2"
               :add-row="{ enabled: addableItems.length > 0, label: t('RETURNS.PAGES.DETAILS.FORM.LINE_ITEMS.TOOLBAR.ADD_ITEM') }"
-              @cell-edit-complete="onEditComplete"
+              :row-actions="rowActions"
+              row-actions-position="column"
               @row-add="onAddItem"
             >
               <VcColumn
@@ -111,11 +112,13 @@
                 type="money"
               />
 
-              <VcColumn
-                id="reason"
-                :title="t('RETURNS.PAGES.DETAILS.FORM.LINE_ITEMS.REASON')"
-                editable
-              />
+              <VcColumn id="reason" :title="t('RETURNS.PAGES.DETAILS.FORM.LINE_ITEMS.REASON')">
+                <template #body="{ data, index }">
+                  <div @keydown.space.stop>
+                    <VcInput :model-value="data.reason" @update:model-value="onReasonChange(index, $event)" />
+                  </div>
+                </template>
+              </VcColumn>
             </VcDataTable>
           </VcCard>
         </div>
@@ -218,17 +221,17 @@ onBeforeClose(async () => {
   return false;
 });
 
-function onEditComplete(event: { data: unknown; field: string; newValue: unknown; index: number }) {
+function onReasonChange(index: number, value: unknown) {
   if (!item.value?.lineItems) {
     return;
   }
 
-  const currentLineItem = item.value.lineItems[event.index];
+  const currentLineItem = item.value.lineItems[index];
   if (!currentLineItem) {
     return;
   }
 
-  currentLineItem[event.field as keyof ReturnLineItem] = event.newValue as never;
+  currentLineItem.reason = value as string;
 }
 
 const quantityRevision = ref<number[]>([]);
@@ -251,6 +254,24 @@ function onQuantityChange(index: number, value: unknown) {
   }
 
   currentLineItem.quantity = clamped;
+}
+
+const rowActions = () => [
+  {
+    icon: "material-delete",
+    title: t("RETURNS.PAGES.DETAILS.FORM.LINE_ITEMS.ACTIONS.DELETE"),
+    type: "danger" as const,
+    clickHandler: (_data: unknown, index?: number) => removeLineItem(index),
+  },
+];
+
+function removeLineItem(index: number | undefined) {
+  if (index === undefined || !item.value?.lineItems) {
+    return;
+  }
+
+  item.value.lineItems.splice(index, 1);
+  quantityRevision.value.splice(index, 1);
 }
 
 function onAddItem(event: { defaults: Record<string, unknown>; cancel: () => void }) {

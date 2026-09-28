@@ -58,6 +58,9 @@
             "REASON": "Reason",
             "TOOLBAR": {
               "ADD_ITEM": "Add item"
+            },
+            "ACTIONS": {
+              "DELETE": "Remove"
             }
           }
         }
