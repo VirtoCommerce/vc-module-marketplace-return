@@ -41,9 +41,9 @@ sellers can self-serve return handling without operator involvement.
 
 ## Scenarios
 
-- **Main menu → Returns**: a list blade (`marketplace-return:access`) filtered to the current
-  seller, with a detail blade for view/create/update, gated by
-  `marketplace-return:{create,read,update}`.
+- **Main menu → Returns**: a list blade (`return:access`) filtered to the current
+  seller, with a detail blade for view/create/update, gated by the platform return module's
+  `return:{create,read,update}` permissions.
 - **Order Details widget**: a compact widget registered on vendor-portal's `OrderDetails` blade
   (via `registerExternalWidget`) that opens the same Returns list, pre-filtered to that order, so
   a seller can see every return raised against it (there can be more than one, e.g. when an order

@@ -19,6 +19,8 @@ public static class ModuleConstants
                     ReturnModule.Core.ModuleConstants.Security.Permissions.Access,
                     ReturnModule.Core.ModuleConstants.Security.Permissions.Read,
                     ReturnModule.Core.ModuleConstants.Security.Permissions.Update,
+                    ReturnModule.Core.ModuleConstants.Security.Permissions.Create,
+                    ReturnModule.Core.ModuleConstants.Security.Permissions.Delete,
                 }
                 .Select(x => new Permission { GroupName = "Return", Name = x })
                 .ToList()
@@ -32,6 +34,7 @@ public static class ModuleConstants
                     ReturnModule.Core.ModuleConstants.Security.Permissions.Access,
                     ReturnModule.Core.ModuleConstants.Security.Permissions.Read,
                     ReturnModule.Core.ModuleConstants.Security.Permissions.Update,
+                    ReturnModule.Core.ModuleConstants.Security.Permissions.Create,
                 }
                 .Select(x => new Permission { GroupName = "Return", Name = x })
                 .ToList()
@@ -45,6 +48,7 @@ public static class ModuleConstants
                     ReturnModule.Core.ModuleConstants.Security.Permissions.Access,
                     ReturnModule.Core.ModuleConstants.Security.Permissions.Read,
                     ReturnModule.Core.ModuleConstants.Security.Permissions.Update,
+                    ReturnModule.Core.ModuleConstants.Security.Permissions.Create,
                 }
                 .Select(x => new Permission { GroupName = "Return", Name = x })
                 .ToList()

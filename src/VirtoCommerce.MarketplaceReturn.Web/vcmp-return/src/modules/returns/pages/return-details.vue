@@ -205,7 +205,7 @@ const bladeToolbar = computed((): IBladeToolbar[] => [
     id: "save",
     title: t("RETURNS.PAGES.DETAILS.TOOLBAR.SAVE"),
     icon: "material-save",
-    permissions: [isNew.value ? "marketplace-return:create" : "marketplace-return:update"],
+    permissions: [isNew.value ? "return:create" : "return:update"],
     async clickHandler() {
       await saveReturn();
       await callParent("reload");

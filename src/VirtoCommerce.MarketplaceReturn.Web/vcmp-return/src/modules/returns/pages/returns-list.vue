@@ -75,7 +75,7 @@ defineBlade({
   url: "/returns",
   name: "ReturnsList",
   isWorkspace: true,
-  permissions: ["marketplace-return:access"],
+  permissions: ["return:access"],
   menuItem: {
     title: "RETURNS.MENU.TITLE",
     icon: "material-assignment_return",
@@ -115,7 +115,7 @@ const bladeToolbar = computed((): IBladeToolbar[] => [
     id: "add",
     icon: "material-add",
     title: t("RETURNS.PAGES.LIST.TOOLBAR.ADD"),
-    permissions: ["marketplace-return:create"],
+    permissions: ["return:create"],
     clickHandler() {
       if (options.value?.orderId) {
         openBlade({
