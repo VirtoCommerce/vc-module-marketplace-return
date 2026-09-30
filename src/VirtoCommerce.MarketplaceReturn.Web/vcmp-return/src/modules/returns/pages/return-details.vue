@@ -158,7 +158,7 @@ defineBlade({
 
 const { t } = useI18n({ useScope: "global" });
 const { showConfirmation } = usePopup();
-const { param, options, openBlade, exposeToChildren, callParent, onBeforeClose } = useBlade<{ orderId?: string }>();
+const { param, options, openBlade, exposeToChildren, callParent, closeSelf, onBeforeClose } = useBlade<{ orderId?: string }>();
 
 const { item, availableQuantities, isModified, loading, loadReturn, loadForOrder, saveReturn } = useReturnDetails();
 
@@ -207,8 +207,12 @@ const bladeToolbar = computed((): IBladeToolbar[] => [
     icon: "material-save",
     permissions: [isNew.value ? "return:create" : "return:update"],
     async clickHandler() {
+      const wasNew = isNew.value;
       await saveReturn();
       await callParent("reload");
+      if (wasNew) {
+        await closeSelf();
+      }
     },
     disabled: !isModified.value,
   },
