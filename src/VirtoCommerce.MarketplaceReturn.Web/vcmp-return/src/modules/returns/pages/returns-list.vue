@@ -84,7 +84,10 @@ defineBlade({
 });
 
 const { t } = useI18n({ useScope: "global" });
-const { openBlade, expanded, param, exposeToChildren, options } = useBlade<{ orderId?: string }>();
+const { openBlade, expanded, param, exposeToChildren, options } = useBlade<{
+  orderId?: string;
+  onReload?: () => void | Promise<void>;
+}>();
 
 const { sortField, sortOrder, sortExpression } = useDataTableSort({
   initialField: "createdDate",
@@ -215,6 +218,7 @@ const reload = async () => {
     skip: (currentPage.value - 1) * (searchQuery.value.take ?? 20),
     sort: sortExpression.value,
   });
+  await options.value?.onReload?.();
 };
 
 exposeToChildren({

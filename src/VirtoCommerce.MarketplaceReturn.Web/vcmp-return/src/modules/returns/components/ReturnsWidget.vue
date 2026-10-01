@@ -17,24 +17,23 @@ const orderId = computed(() => (bladeContext.value?.item as { id?: string } | un
 
 const { totalCount, loadReturns } = useReturnsList({ pageSize: 5 });
 
-watch(
-  orderId,
-  async (id) => {
-    if (id) {
-      await loadReturns({ orderId: id, skip: 0 });
-    }
-  },
-  { immediate: true },
-);
+async function loadCount() {
+  if (orderId.value) {
+    await loadReturns({ orderId: orderId.value, skip: 0 });
+  }
+}
+
+watch(orderId, loadCount, { immediate: true });
 
 // Opens the same list blade as the main menu, scoped to this order (and the current seller,
 // via useReturnsList's own currentSeller injection), so a click always shows every return for
-// the order - there can be more than one.
+// the order - there can be more than one. The list calls onReload whenever it reloads, so the
+// badge stays in sync with returns created from it.
 function onClick() {
   if (!orderId.value) {
     return;
   }
 
-  openBlade({ blade: { name: "ReturnsList" }, options: { orderId: orderId.value } });
+  openBlade({ blade: { name: "ReturnsList" }, options: { orderId: orderId.value, onReload: loadCount } });
 }
 </script>
